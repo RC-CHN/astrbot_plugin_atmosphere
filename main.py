@@ -24,7 +24,7 @@ class MyPlugin(Star):
         message_obj = event.message_obj
         group_id = message_obj.group_id
         
-        logger.debug(f"收到消息，消息类型: {message_obj.type}, 发送者: {sender_id}, 群组ID: {group_id or '无'}")
+        logger.info(f"收到消息，消息类型: {message_obj.type}, 发送者: {sender_id}, 群组ID: {group_id or '无'}")
 
         trigger_reason = None
         if sender_id in target_umos:
@@ -68,7 +68,7 @@ class MyPlugin(Star):
             f"  - 发送者: {sender_details}\n"
             f"  - 消息链 (解析后):\n{message_chain_str}"
         )
-        logger.debug(log_message)
+        logger.info(log_message)
 
     async def send_to_webhook(self, message_obj, trigger_reason, url):
         """将消息对象序列化并发送到指定的Webhook URL。"""
