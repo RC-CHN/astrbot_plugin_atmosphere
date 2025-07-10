@@ -1,5 +1,6 @@
 import asyncio
 import aiohttp
+import json
 from multiprocessing import Process, Queue
 
 from astrbot.api.event import filter, AstrMessageEvent
@@ -107,8 +108,23 @@ class MyPlugin(Star):
             logger.debug(f"捕获到来自 {trigger_reason} 的消息，准备推送到 Webhook。")
             await self.send_to_webhook(message_obj, trigger_reason, webhook_url)
 
+    def _serialize_for_json(self, obj):
+        """Safely serialize an object for JSON by converting non-serializable parts to strings."""
+        if hasattr(obj, '__dict__'):
+            serializable_dict = {}
+            for key, value in obj.__dict__.items():
+                if key.startswith('_'):
+                    continue
+                try:
+                    json.dumps(value)
+                    serializable_dict[key] = value
+                except TypeError:
+                    serializable_dict[key] = str(value)
+            return serializable_dict
+        return str(obj)
+
     async def send_to_webhook(self, message_obj, trigger_reason, url):
-        """将消息对象序列化并发送到指定的 Webhook URL。"""
+        """将消息对象序列化并发送到指定的Webhook URL。"""
         payload = {
             "trigger_reason": trigger_reason,
             "type": message_obj.type.name,
@@ -116,8 +132,8 @@ class MyPlugin(Star):
             "session_id": message_obj.session_id,
             "message_id": message_obj.message_id,
             "group_id": message_obj.group_id,
-            "sender": message_obj.sender.__dict__,
-            "message": [comp.__dict__ for comp in message_obj.message],
+            "sender": self._serialize_for_json(message_obj.sender),
+            "message": [self._serialize_for_json(comp) for comp in message_obj.message],
             "message_str": message_obj.message_str,
             "timestamp": message_obj.timestamp
         }
