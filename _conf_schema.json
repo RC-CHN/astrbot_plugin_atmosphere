@@ -1,14 +1,48 @@
 {
-  "target_umo": {
-    "description": "监听目标的UMO列表",
+  "monitor_target_umos": {
+    "description": "[发送] 要监听的目标用户 UMO 列表",
     "type": "list",
-    "hint": "需要监控的UMO列表",
     "default": []
   },
-  "webhook_url": {
-    "description": "Webhook 的目标地址",
+  "monitor_target_group_ids": {
+    "description": "[发送] 要监听的目标群组 ID 列表",
+    "type": "list",
+    "default": []
+  },
+  "monitor_webhook_url": {
+    "description": "[发送] 消息要推送到的外部 Webhook URL",
     "type": "string",
-    "hint": "请输入完整的 Webhook URL",
     "default": ""
+  },
+
+  "api_enabled": {
+    "description": "[接收] 是否启用 API 服务",
+    "type": "bool",
+    "default": false
+  },
+  "api_host": {
+    "description": "[接收] API 监听的主机地址",
+    "type": "string",
+    "default": "0.0.0.0"
+  },
+  "api_port": {
+    "description": "[接收] API 监听的端口",
+    "type": "int",
+    "default": 9968
+  },
+  "api_webhook_path": {
+    "description": "[接收] API 的接收路径",
+    "type": "string",
+    "default": "/forward"
+  },
+  "api_preshared_token": {
+    "description": "[接收] 用于 API 请求验证的 Preshared Token (在 X-Auth-Token 头中传递)",
+    "type": "string",
+    "default": ""
+  },
+  "forward_target_umo": {
+    "description": "[接收] API 收到的消息要转发给哪些用户 (UMO 列表)",
+    "type": "list",
+    "default": []
   }
 }
