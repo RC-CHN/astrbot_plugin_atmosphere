@@ -1,0 +1,14 @@
+{
+  "target_umo": {
+    "description": "监听目标的UMO列表",
+    "type": "list",
+    "hint": "需要监控的UMO列表",
+    "default": []
+  },
+  "webhook_url": {
+    "description": "Webhook 的目标地址",
+    "type": "string",
+    "hint": "请输入完整的 Webhook URL",
+    "default": ""
+  }
+}
